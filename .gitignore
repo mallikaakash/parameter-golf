@@ -13,3 +13,4 @@ logs/*.pt
 logs/
 .claude/settings.local.json
 STRATEGY.md
+data/fixture/

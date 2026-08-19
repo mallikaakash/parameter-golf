@@ -787,10 +787,14 @@ def main() -> None:
     log0("=" * 100, console=False)
     log0(f"Running Python {sys.version}", console=False)
     log0(f"Running PyTorch {torch.__version__}", console=False)
-    log0(
-        subprocess.run(["nvidia-smi"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False).stdout,
-        console=False,
-    )
+    try:
+        nvidia_smi = subprocess.run(
+            ["nvidia-smi"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False
+        ).stdout
+    except OSError as exc:
+        # check=False covers a nonzero exit, but not a missing nvidia-smi binary.
+        nvidia_smi = f"nvidia-smi unavailable: {exc}"
+    log0(nvidia_smi, console=False)
     log0("=" * 100, console=False)
 
     # -----------------------------
